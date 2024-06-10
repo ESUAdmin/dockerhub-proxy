@@ -1,0 +1,9 @@
+#!/bin/bash
+
+PORT=10080
+MAIN=$(dirname "$0")/main
+
+echo "listen on $PORT x: $MAIN"
+echo "pid: "$(readlink /proc/self)
+
+socat -d TCP-LISTEN:$PORT,bind=127.0.0.1,reuseaddr,fork EXEC:$MAIN
