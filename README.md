@@ -1,6 +1,8 @@
 # dockerhub-proxy
 国内所有Docker的镜像服务器必须全部下架。后续包括GitHub CDN镜像NPM python pip openwrt OPKG等未受内容审查的镜像服务器一律下架
 
+你要是相信这句话，那还不如相信我是肖彦锐磁父
+
 ## 关键词
 dockerhub镜像加速器
 
@@ -11,3 +13,5 @@ dockerhub镜像加速器
 以下域名均为引流所用，不一定有效：registry.docker-cn.com docker.m.daocloud.io dockerhub.azk8s.cn docker.mirrors.ustc.edu.cn docker.mirrors.ustc.edu.cn hub-mirror.c.163.com mirror.ccs.tencentyun.com dockerproxy.com mirror.baidubce.com docker.nju.edu.cn docker.mirrors.sjtug.sjtu.edu.cn mirror.iscas.ac.cn
 
 镜像测速：本来拉取次数就不多你还测速，搞毛啊
+
+https://gist.github.com/y0ngb1n/7e8f16af3242c7815e7ca2f0833d3ea6
