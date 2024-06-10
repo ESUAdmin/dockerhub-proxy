@@ -1,5 +1,12 @@
 # dockerhub-proxy
-国内所有Docker的镜像服务器必须全部下架。后续包括GitHub CDN镜像NPM python pip openwrt OPKG等未受内容审查的镜像服务器一律下架
+
+```
+@全体成员 收到上面信息监管的最新要求，国
+内所有Docker的镜像服务器必须全部下架。后
+续包括GitHub CDN镜像NPM python pip
+openwrt OPKG等未受内容审查的镜像服务器一律下架
+大家以后打算什么样的方式访问Dock[图片]
+```
 
 你要是相信这句话，那还不如相信我是肖彦锐磁父
 
