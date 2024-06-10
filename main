@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# curl -HAccept:application/dns-json 'https://cloudflare-dns.com/dns-query?name=production.cloudflare.docker.com'
+PRODUCTION=104.16.100.215
+
+sendBadRequest()
+{
+	echo -e "HTTP/1.1 400 Bad Request\r"
+	echo -e "Content-Length: 0\r"
+	echo -e "Connection: close\r"
+	echo -e "\r"
+	echo -e "\r"
+}
+
+IFS=" " read -r Method Uri Version
+
+if [ "$Version" != $'HTTP/1.1\r' ]
+then
+	sendBadRequest
+	exit
+fi
+
+hds=()
+line=
+while IFS=$'\n' read -r line && [ "$line" != $'\r' ]
+do
+	line=${line:0:$((${#line}-1))}
+	IFS=" " read -r Key Value <<< "$line"
+	Key=$(tr A-Z a-z <<< "$Key")
+	if [ "$Key" = "host:" ]
+	then
+		Value="registry-1.docker.io"
+	fi
+
+	hds+=(-H "$Key $Value")
+done
+
+curl -sS --http1.1 -D- "${hds[@]}" -X$Method "https://registry-1.docker.io$Uri" \
+	2>>error.log | tee -a access.log | \
+{
+	IFS=$'\n' read -r FirstLine
+	IFS=" " read -r _ StatusCode _ <<< "$FirstLine"
+	if [ "$StatusCode" = 307 ]
+	then
+		while IFS=$'\n' read -r line && [ "$line" != $'\r' ]
+		do
+			IFS=" " read -r Key Value <<< "$line"
+			Key=$(tr A-Z a-z <<< "$Key")
+			if [ "$Key" = "location:" ]
+			then
+				cat > /dev/null
+				break
+			fi
+		done
+
+		url=${Value:8:${#Value}-9}
+		IFS=/ read -r _ pathname <<< "$url"
+		curl -sS --http1.1 -D- -kH "Host: production.cloudflare.docker.com" \
+			"https://$PRODUCTION/$pathname" 2>>error.log
+	else
+		echo "$FirstLine"
+		cat
+	fi
+}
