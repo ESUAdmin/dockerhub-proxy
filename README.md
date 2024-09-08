@@ -1,3 +1,7 @@
+# 喜报
+
+you can `curl -v https://production.cloudflare.docker.com` now
+
 # dockerhub-proxy
 
 ```
